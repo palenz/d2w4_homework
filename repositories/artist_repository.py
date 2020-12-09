@@ -11,53 +11,27 @@ def save(artist):
     artist.id = id
     return artist
 
+def delete_all():
+    sql = 'DELETE FROM artists'
+    run_sql(sql)
+
+def select(id):
+    artist = None
+    sql = 'SELECT * FROM artists where id = %s'
+    values = [id]
+    result = run_sql(sql, values)[0]
+
+    if result is not None:
+        artist = Artist(result['name'], result['id'])
+        return artist
 
 
-# def save(task):
-#     sql = 'INSERT INTO tasks (description, user_id, duration, completed) VALUES (%s, %s, %s, %s) RETURNING *'
-#     values = [task.description, task.user.id, task.duration, task.completed]
-#     results = run_sql(sql, values)
-#     id = results [0]['id']
-#     task.id = id
-#     return task
-    
-    
-# def select_all():
-#     tasks = []
+def select_all():
+    artists = []
 
-#     sql = 'SELECT * FROM tasks'
-#     results = run_sql(sql)
+    sql = 'SELECT * FROM artists'
+    results = run_sql(sql)
 
-#     for row in results: 
-#         user = user_repository.select(row['user_id'])
-#         task = Task(row['description'], user, row['duration'], row['completed'], row['id'])
-#         tasks.append(task)
-    
-#     return tasks
-
-# def select(id):
-#     task = None
-#     sql = 'SELECT * FROM tasks WHERE id = %s'
-#     values = [id]
-#     result = run_sql(sql, values)[0]
-
-#     if result is not None:
-#         user = user_repository.select(result['user_id'])
-#         task = Task(result['description'], user, result['duration'], result['completed'], result['id'])
-#     return task
-    
-
-# def delete_all():
-#     sql = 'DELETE FROM tasks'
-#     run_sql(sql)
-
-# def delete(id):
-#     sql = 'DELETE FROM tasks WHERE id = %s'
-#     values = [id]
-#     run_sql(sql, values)
-
-
-# def update(task):
-#     sql = 'UPDATE tasks SET (description, user_id, duration, completed) = (%s, %s, %s, %s) WHERE id = %s'
-#     values = [task.description, task.user.id, task.duration, task.completed, task.id]
-#     run_sql(sql, values)
+    for row in results:
+        artist = Artist(row['name'], row['id'])
+    return artists
